@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -60,7 +61,19 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-    public void rotateToTag() {
-        applyRequest(() -> m_drive.withRotationalRate(-MaxAngularRate));
+    public void setGyroYaw(Rotation2d yaw) {
+        m_pigeon2.setYaw(yaw.getDegrees());
     }
+
+    /**
+     * Will rotate the provided value by 180 if on red alliance
+     */
+    public void zeroGyroAdjusted(Rotation2d rot) {
+        setGyroYaw(FieldUtil.isAllianceBlue() ? rot : rot.plus(Rotation2d.fromDegrees(180)));
+    }
+
+    public void zeroGyroAdjusted() {
+        zeroGyroAdjusted(Rotation2d.fromDegrees(180));
+    }
+
 }

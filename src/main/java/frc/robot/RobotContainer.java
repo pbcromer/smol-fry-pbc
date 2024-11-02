@@ -52,6 +52,7 @@ public class RobotContainer {
 
     joystick.y().toggleOnTrue(rotateToTag);
     joystick.x().toggleOnTrue(distanceToTag);
+    joystick.start().onTrue(drivetrain.runOnce(drivetrain::zeroGyroAdjusted));
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
